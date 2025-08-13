@@ -36,4 +36,4 @@ Write-Host "Agent  jar: $agentJar"
     org.openjdk.btrace.client.Main `
     -p 9091 `
     $TargetPid `
-    $TraceScript
+    $TraceScript # > btrace.log.txt

@@ -3,57 +3,35 @@
 https://github.com/btraceio/btrace/releases
 
 
-$env:JAVA_HOME = 'C:\Users\a.vergnaud\dev\jdk-23'
+./init.ps1
 
-$env:BTRACE_HOME = 'C:\Users\a.vergnaud\dev\btrace\btrace-v2.2.6-bin'
+./monitor.ps1
 
-$env:PATH = "$($env:JAVA_HOME)\bin;$($env:BTRACE_HOME)\bin;$env:PATH"
+# jackson-databind call example
 
-jps -l
+Using `jstack();` inside TraceJackson.java:
 
-26904
+```
+JACKSON-METHOD-ENTER: com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields
 
-
-
-
-java -cp "$clientJar;$agentJar" org.openjdk.btrace.client.Main -p 26904 TraceJackson.java
-
-...
-
-powershell
-
-cd 'C:\Users\a.vergnaud\dev\btrace\bt-btrace'
-
-$env:JAVA_HOME = 'C:\Users\a.vergnaud\dev\jdk-23'
-
-$env:PATH = "$($env:JAVA_HOME)\bin;$env:PATH"
-
-$env:BTRACE_HOME = 'C:\Users\a.vergnaud\dev\btrace\btrace-v2.2.6-bin'
-
-java -version
-jps -l
-
-Get-ChildItem -Path "$env:BTRACE_HOME\libs" -Filter "*.jar" | Format-Table Name, FullName -AutoSize
-
-Remove-Item Env:_JAVA_OPTIONS -ErrorAction SilentlyContinue
-Remove-Item Env:JAVA_OPTS -ErrorAction SilentlyContinue
-Remove-Item Env:JAVA_TOOL_OPTIONS -ErrorAction SilentlyContinue
-
-$libs = Get-ChildItem -Path "$env:BTRACE_HOME\libs" -Filter "*.jar"
-$clientJar = ($libs | Where-Object { $_.Name -match 'client' } | Select-Object -First 1).FullName
-$agentJar  = ($libs | Where-Object { $_.Name -match 'agent'  } | Select-Object -First 1).FullName
-
-if (-not $clientJar -or -not $agentJar) {
-  Write-Error "Could not find btrace client/agent jars under $($env:BTRACE_HOME)\lib. Check the folder listing."
-  return
-}
-
-"Client jar: $clientJar"
-
-"Agent  jar: $agentJar"
-
-$targePid = 1480                # <-- replace with the PID you want
-$script = Join-Path $PWD 'TraceJackson.java'  # or full path
-
-& "$env:JAVA_HOME\bin\java.exe" -cp "$clientJar;$agentJar" org.openjdk.btrace.client.Main -p 9091 $targePid $script
-
+com.fasterxml.jackson.databind.ser.BeanSerializer.serialize(BeanSerializer.java:183)
+com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:503)
+com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:342)
+com.fasterxml.jackson.databind.ObjectMapper._writeValueAndClose(ObjectMapper.java:4859)
+com.fasterxml.jackson.databind.ObjectMapper.writeValueAsString(ObjectMapper.java:4079)
+some.MyUtility1.test(MyUtility1.java:11)
+com.example.bt_some_webapp.HelloController.index(HelloController.java:21)
+java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+java.base/java.lang.reflect.Method.invoke(Method.java:580)
+org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:258)
+org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:191)
+org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:991)
+org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:896)
+org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+```
