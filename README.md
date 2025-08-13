@@ -24,7 +24,13 @@ But it does not imply that this dependency is called at runtime.
 
 ## Demo: detecting jackson-databind calls
 
+For both positive and negative tests, we use the same library version:
+ * [https://github.com/avergnaud/bt-some-lib](https://github.com/avergnaud/bt-some-lib)
+
 ### positive test
+
+Webapp version:
+ * [https://github.com/avergnaud/bt-some-webapp/tree/calling-jackson-databind](https://github.com/avergnaud/bt-some-webapp/tree/calling-jackson-databind)
 
 ![calling-jackson-databind gif](./docs/calling-jackson-databind.gif?raw=true)
 
@@ -32,11 +38,14 @@ But it does not imply that this dependency is called at runtime.
 
 ### negative test
 
+Webapp version:
+ * [https://github.com/avergnaud/bt-some-webapp/tree/not-calling-jackson-databind](https://github.com/avergnaud/bt-some-webapp/tree/not-calling-jackson-databind)
+
 ![not-calling-jackson-databind gif](./docs/not-calling-jackson-databind.gif?raw=true)
 
 ![not-calling-jackson-databind.webm](./docs/not-calling-jackson-databind.webm?raw=true)
 
-## jackson-databind call example
+## Appendix: jackson-databind call example
 
 Using `jstack();` inside TraceJackson.java:
 
