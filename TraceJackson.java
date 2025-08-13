@@ -15,6 +15,6 @@ public class TraceJackson {
   public static void onEnter(@ProbeClassName String className, @ProbeMethodName String methodName) {
     println("JACKSON-METHOD-ENTER: " + str(className) + "." + str(methodName));
     // optionally: print the caller stack
-    // jstack();
+    jstack();
   }
 }

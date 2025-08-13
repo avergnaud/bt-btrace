@@ -2,7 +2,23 @@
 
 https://github.com/btraceio/btrace/releases
 
-C:\Users\a.vergnaud\dev\jdk-23\bin\jps -l
+
+$env:JAVA_HOME = 'C:\Users\a.vergnaud\dev\jdk-23'
+
+$env:BTRACE_HOME = 'C:\Users\a.vergnaud\dev\btrace\btrace-v2.2.6-bin'
+
+$env:PATH = "$($env:JAVA_HOME)\bin;$($env:BTRACE_HOME)\bin;$env:PATH"
+
+jps -l
+
+26904
+
+
+
+
+java -cp "$clientJar;$agentJar" org.openjdk.btrace.client.Main -p 26904 TraceJackson.java
+
+...
 
 powershell
 
