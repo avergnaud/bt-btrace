@@ -1,13 +1,42 @@
 # bt-btrace
 
-https://github.com/btraceio/btrace/releases
+[https://github.com/btraceio/btrace/releases](https://github.com/btraceio/btrace/releases)
 
+## Usage
 
+```
 ./init.ps1
+./monitor.ps1 <<pid>>
+```
 
-./monitor.ps1
+## Test case
 
-# jackson-databind call example
+The mvn dependency tree may show jackson-databind:
+```
+com.example:bt-some-webapp:jar:0.0.1-SNAPSHOT
+\- com.example:bt-some-lib:jar:0.0.1-SNAPSHOT:compile
+   \- com.fasterxml.jackson.core:jackson-databind:jar:2.19.2:compile
+```
+
+But it does not imply that this dependency is called at runtime.
+
+![test_case.drawio](./docs/test_case.drawio.png?raw=true)
+
+## Demo: detecting jackson-databind calls
+
+### positive test
+
+![calling-jackson-databind gif](./docs/calling-jackson-databind.gif?raw=true)
+
+![calling-jackson-databind.webm](./docs/calling-jackson-databind.webm?raw=true)
+
+### negative test
+
+![not-calling-jackson-databind gif](./docs/not-calling-jackson-databind.gif?raw=true)
+
+![not-calling-jackson-databind.webm](./docs/not-calling-jackson-databind.webm?raw=true)
+
+## jackson-databind call example
 
 Using `jstack();` inside TraceJackson.java:
 
